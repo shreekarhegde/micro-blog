@@ -1,0 +1,34 @@
+{
+  "host": "localhost",
+  "port": 3030,
+  "public": "../public/",
+  "paginate": {
+    "default": 10,
+    "max": 50
+  },
+  "authentication": {
+    "secret": "09df61b5b7d97c630ba43e08c502e7d1f98f7eae580798abab96b631b24ba1d4cdc1fe64478b6a3961961453c065777fb563daac9f5d1c6f678726675ff39365dbb850d6800af96de56bb62d7a50b541525c4529d8d0d119c82330080a5795a77290871d2fd3fdee2d25763a0b024831c318b1eac93baf3abf073d1b8060b3469d44b39a7e9abdf65b150e4b546dde26939062c28db4bf2d160efaf73289a4d5e5fb72a84dfaa101299139f3354b5e17fc429c830b2c55b33216e1de64dc9dc5c4e9d40c3f2abbd68898f946f7f08744ea701dd6870b7399458790fb87483e49084868532da3022e5c064f1748ad15077aefeb92383d9d29a1125a233665816b",
+    "strategies": [
+      "jwt",
+      "local"
+    ],
+    "path": "/authentication",
+    "service": "users",
+    "jwt": {
+      "header": {
+        "typ": "access"
+      },
+      "audience": "https://yourdomain.com",
+      "subject": "anonymous",
+      "issuer": "feathers",
+      "algorithm": "HS256",
+      "expiresIn": "1d"
+    },
+    "local": {
+      "entity": "user",
+      "usernameField": "email",
+      "passwordField": "password"
+    }
+  },
+  "mongodb": "mongodb://localhost:27017/micro_blog"
+}
