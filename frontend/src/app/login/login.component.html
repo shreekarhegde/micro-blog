@@ -36,12 +36,7 @@
         class="form-control"
         placeholder="Password"
       />
-      <div
-        *ngIf="
-          (form.get('password').touched && form.get('password').invalid) ||
-          pwdErrorMsg
-        "
-      >
+      <div *ngIf="form.get('password').touched && form.get('password').invalid">
         {{ pwdErrorMsg }}
       </div>
       <div id="remember" class="checkbox">
