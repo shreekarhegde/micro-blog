@@ -1,8 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, Validators, FormGroup } from "@angular/forms";
 import { HttpService } from "../services/http.service";
-const strongRegex =
-  "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{4,})";
 const AUTHENTICATION_URL: string = "authentication";
 @Component({
   selector: "app-login",
@@ -23,16 +21,13 @@ export class LoginComponent implements OnInit {
         email: [
           "",
           {
-            validators: [Validators.required, Validators.minLength(2)]
+            validators: [Validators.required]
           }
         ],
         password: [
           "",
           {
-            validators: [
-              Validators.required,
-              Validators.pattern(new RegExp(strongRegex))
-            ]
+            validators: [Validators.required]
           }
         ]
       },
@@ -42,37 +37,26 @@ export class LoginComponent implements OnInit {
     );
   }
 
-  ngOnInit() {
-    console.log(this.form.get("email"));
-    console.log(this.form.get("password"));
-    this.validateForm();
-  }
+  ngOnInit() {}
 
-  async validateForm(): Promise<boolean> {
+  validateForm(): boolean {
     let hasError = false;
-    console.log(this.form.get("password").errors);
-    await this.form.get("password").valueChanges.subscribe(value => {
-      console.log("ngOnInit: value", value);
-      if (
-        this.form.get("password").errors &&
-        this.form.get("password").errors.pattern
-      ) {
-        hasError = true;
-        this.pwdErrorMsg =
-          "Password must contain a Small case, an Upper case, a Number and a Special character.";
-      }
-      if (!value.length) {
-        hasError = true;
-        this.pwdErrorMsg = "This filed is required!";
-      }
-    });
+    if (this.form.get("email").invalid) {
+      hasError = true;
+      this.emailErrorMsg = "This field is required.";
+    }
+    if (this.form.get("password").invalid) {
+      hasError = true;
+      this.pwdErrorMsg = "This field is required.";
+    }
     return hasError;
   }
 
-  async onSubmit(formData: FormGroup) {
+   onSubmit(formData: FormGroup) {
     console.log("formData: onSubmit", formData);
-    let hasError = await this.validateForm();
+    let hasError = this.validateForm();
     console.log("hasError: onSubmit", hasError);
+    console.log('onSubmit: pwdErrorMsg', this.pwdErrorMsg);
     if (hasError) {
       return;
     }
@@ -89,6 +73,17 @@ export class LoginComponent implements OnInit {
         console.log("onSubmit: authentication error", error);
       }
     );
+  }
+
+  clearErrors(filed: string){
+    switch(filed){
+      case 'password':
+        this.pwdErrorMsg = '';
+        break;
+      case 'email':
+        this.emailErrorMsg = '';
+        break;
+    }
   }
 
   get email() {
